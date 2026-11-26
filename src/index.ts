@@ -1,7 +1,8 @@
-
 import { Command } from "commander";
+import React from "react";
+import { render } from "ink";
 import "dotenv/config";
-import { OpenRouterClient } from "./api/client.js";
+import { App } from "./ui/App.js";
 
 // Create a CLI program
 const program = new Command();
@@ -10,28 +11,23 @@ const program = new Command();
 program
   .name("min-agent")
   .description("A minimal coding assistant")
-  .argument("<prompt>", "Prompt to send to the agent")
-  .action(async (prompt: string) => {
-    const apiKey = process.env.OPENROUTER_API_KEY
+  .action(() => {
+    const apiKey = process.env.OPENROUTER_API_KEY;
 
-    if(!apiKey){
-        console.error("Error: OPENROUTER_API_KEY is missing. Please add it to your .env file.")
-        process.exitCode = 1;
-        return
+    if (!apiKey) {
+      console.error(
+        "Error: OPENROUTER_API_KEY is missing. Please add it to your .env file."
+      );
+      process.exitCode = 1;
+      return;
     }
-    
-    const client = new OpenRouterClient(apiKey);
 
-    try{
-        const response = await client.createChatCompletion(prompt);
-        console.log("\nAssistant:", response);
-    }catch (error) {
-        console.error(
-            "Error:",
-            error instanceof Error ? error.message : error
-        );
-        process.exitCode = 1;
-    }
+    // Launch the Ink application
+    render(
+      React.createElement(App, {
+        apiKey,
+      })
+    );
   });
 
 // Parse terminal arguments

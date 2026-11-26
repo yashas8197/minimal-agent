@@ -9,3 +9,8 @@ export interface ChatCompletionChoice {
     content: string | null;
   };
 }
+
+export interface ChatMessage {
+    role: "user" | "assistant";
+    content: string;
+}

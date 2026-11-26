@@ -1,4 +1,4 @@
-import { ChatCompletionResponse } from "./types.js";
+import { ChatCompletionResponse, ChatMessage } from "./types.js";
 
 const OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1";
 
@@ -9,7 +9,7 @@ export class OpenRouterClient{
         this.apiKey = apiKey
     }
 
-    async createChatCompletion(prompt: string){
+    async createChatCompletion(messages: ChatMessage[]){
         const response = await fetch(`${OPENROUTER_BASE_URL}/chat/completions`, {
             method: "POST",
             headers: {
@@ -18,12 +18,7 @@ export class OpenRouterClient{
             },
             body: JSON.stringify({
                 model: "openrouter/free",
-                messages: [
-                    {
-                        role: "user",
-                        content: prompt,
-                    },
-                ],
+                messages
             })
         })
 
