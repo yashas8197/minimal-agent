@@ -2,6 +2,7 @@ import type { ChatMessage } from "../api/types.js";
 import { OpenRouterClient } from "../api/client.js";
 import { getToolDefinitions } from "../tools/index.js";
 import { executeToolCalls } from "./toolExecutor.js";
+import { buildSystemPrompt } from "./systemPrompt.js";
 
 export async function runAgentLoop(
     client: OpenRouterClient,
@@ -11,7 +12,13 @@ export async function runAgentLoop(
     while (true) {
         const response = await client.createChatCompletion({
             model: "openrouter/free",
-            messages,
+            messages: [
+                {
+                    role: "system",
+                    content: buildSystemPrompt()
+                },
+                ...messages
+            ],
             tools: getToolDefinitions()
         });
 
