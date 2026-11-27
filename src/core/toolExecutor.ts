@@ -65,6 +65,14 @@ export async function executeToolCalls(
             resultSummary = tool.renderResult(result);
         }
 
+        messages.push({
+            role: "tool",
+            tool_call_id: toolCall.id,
+            content: result.output,
+        });
+
+        results.push({ toolCall, result, callSummary, resultSummary });
+
     }
 
     return { messages, results };
