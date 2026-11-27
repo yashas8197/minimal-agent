@@ -2,6 +2,9 @@ import { readTool } from "./read.js";
 import type { Tool } from "./types.js";
 import { z } from "zod";
 import type { ToolDefinition } from "../api/types.js";
+import { bashTool } from "./bash.js";
+import { writeTool } from "./write.js";
+import { editTool } from "./edit.js";
 
 const toolRegistry = new Map<string, Tool>();
 
@@ -9,7 +12,10 @@ export function registerTool(tool: Tool) {
   toolRegistry.set(tool.name, tool);
 }
 
+registerTool(bashTool);
 registerTool(readTool);
+registerTool(writeTool);
+registerTool(editTool);
 
 export function getTool(name: string): Tool | undefined {
   return toolRegistry.get(name);
