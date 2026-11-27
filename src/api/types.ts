@@ -10,7 +10,29 @@ export interface ChatCompletionChoice {
   };
 }
 
-export interface ChatMessage {
-    role: "user" | "assistant";
-    content: string;
+export interface ToolCall {
+  id: string;
+  type: "function";
+  function: {
+    name: string;
+    arguments: string;
+  };
 }
+
+export interface ChatMessage {
+    role: "system" | "user" | "assistant" | "tool";
+    content: string;
+    tool_calls?: ToolCall[];
+    tool_call_id?: string;
+}
+
+export interface ToolDefinition {
+  type: 'function',
+  function: {
+    name: string,
+    description: string,
+    parameters: Record<string, unknown>;
+  }
+}
+
+
